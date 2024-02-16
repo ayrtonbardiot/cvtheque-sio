@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CompetenceRequest;
 use Illuminate\Http\Request;
 use App\Models\{
     Competence
@@ -56,9 +57,18 @@ class CompetenceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CompetenceRequest $request)
     {
-        //
+//        $validateData = $request->validated();
+//        Competence::create($validateData);
+//        return redirect()->route('competences.index')->with('information', 'Création de la compétence avec succès.');
+        // Autre alternative
+        $competence = new Competence();
+        $competence->intitule = $request->intitule;
+        $competence->description = $request->description;
+        $competence->save();
+        $succes = 'Enregistrement effecuté avec succès';
+        return redirect()->route('competences.index')->withInformation($succes);
     }
 
     /**
@@ -78,24 +88,37 @@ class CompetenceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Competence $competence)
     {
-        echo 'Modification d\'une compétence';
+        $data = [
+            'title' => 'Les compétences de ' . config('app.name'),
+            'description' => 'Retrouver toutes les compétences de ' . config('app.name'),
+            'competence' => $competence
+        ];
+
+        return view('competences.edit', $data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CompetenceRequest $request, Competence $competence)
     {
-        //
+        $validateData = $request->all();
+        $competence->update($validateData);
+        $succes = 'Modification effectuée avec succès';
+
+        return redirect()->route('competences.index')->withInformation($succes);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Competence $competence)
     {
-        echo 'Suppression d\'une compétence';
+//        echo 'Suppression d\'une compétence';
+        $competence->delete();
+
+        return back()->withInformation('Suppression effectuée avec succès');
     }
 }

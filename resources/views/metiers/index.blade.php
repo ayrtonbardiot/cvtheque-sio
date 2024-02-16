@@ -6,33 +6,33 @@
     <div class="flex flex-wrap -mx-3">
         <div class="flex-none w-full max-w-full px-3">
             @if(session('information'))
-            <div class="w-full max-w-full px-3 mb-6">
-                <div
-                    class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div class="flex-auto p-4">
-                        <div class="flex flex-row -mx-3 items-center">
-                            <div class="flex-none w-2/3 max-w-full px-3 ">
-                                <div>
-                                    <h5 class="mb-0 font-bold">
-                                        {{ session('information') }}
-                                    </h5>
+                <div class="w-full max-w-full px-3 mb-6">
+                    <div
+                        class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
+                        <div class="flex-auto p-4">
+                            <div class="flex flex-row -mx-3 items-center">
+                                <div class="flex-none w-2/3 max-w-full px-3 ">
+                                    <div>
+                                        <h5 class="mb-0 font-bold">
+                                            {{ session('information') }}
+                                        </h5>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="px-3 text-right basis-1/3">
-                                <div
-                                    class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
-                                    <i class="ni leading-none text-lg relative top-3.5 text-white ni-check-bold"></i>
+                                <div class="px-3 text-right basis-1/3">
+                                    <div
+                                        class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
+                                        <i class="ni leading-none text-lg relative top-3.5 text-white ni-check-bold"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @endif
             <div
                 class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
                 <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
-                    <h6>Table des compétences</h6>
+                    <h6>Table des métiers</h6>
                 </div>
                 <div class="flex-auto px-0 pt-0 pb-2">
                     <div class="p-0 overflow-x-auto ps">
@@ -43,32 +43,38 @@
                                     Identifiant
                                 </th>
                                 <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
-                                    Intitulé
+                                    Libellé
                                 </th>
                                 <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
                                     Description
+                                </th>
+                                <th class="px-6 py-3 pl-2 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs border-b-solid tracking-none whitespace-nowrap text-slate-400 opacity-70">
+                                    Slug
                                 </th>
                                 <th class="px-6 py-3 font-semibold capitalize align-middle bg-transparent border-b border-gray-200 border-solid shadow-none tracking-none whitespace-nowrap text-slate-400 opacity-70"></th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($competences as $competence)
+                            @foreach($metiers as $metier)
                                 <tr>
                                     <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent text-center w-1/10">
-                                        <p class="mb-0 text-xs leading-tight text-slate-400">{{ $competence->id }}</p>
+                                        <p class="mb-0 text-xs leading-tight text-slate-400">{{ $metier->id }}</p>
                                     </td>
                                     <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
                                         <div class="flex px-2 py-1">
                                             <div class="flex flex-col justify-center">
-                                                <h6 class="mb-0 text-sm leading-normal">{{ $competence->intitule }}</h6>
+                                                <h6 class="mb-0 text-sm leading-normal">{{ $metier->libelle }}</h6>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                        <p class="mb-0 text-xs font-normal leading-tight">{{ $competence->description }}</p>
+                                        <p class="mb-0 text-xs font-normal leading-tight">{{ $metier->description }}</p>
                                     </td>
                                     <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
-                                        <form method="post" action="{{ route('competences.show', $competence->id) }}">
+                                        <p class="mb-0 text-xs font-normal leading-tight">{{ $metier->slug }}</p>
+                                    </td>
+                                    <td class="p-2 align-middle bg-transparent border-b whitespace-nowrap shadow-transparent">
+                                        <form method="post" action="{{ route('metiers.show', $metier->id) }}">
                                             @csrf
                                             @method('GET')
                                             <button type="submit">
@@ -81,7 +87,7 @@
                                                 </svg>
                                             </button>
                                         </form>
-                                        <form method="post" action="{{ route('competences.edit', $competence->id) }}">
+                                        <form method="post" action="{{ route('metiers.edit', $metier->id) }}">
                                             @csrf
                                             @method('GET')
                                             <button type="submit">
@@ -92,7 +98,7 @@
                                                 </svg>
                                             </button>
                                         </form>
-                                        <form method="post" action="{{ route('competences.destroy', $competence->id) }}">
+                                        <form method="post" action="{{ route('metiers.destroy', $metier->id) }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit">
@@ -119,10 +125,10 @@
 
             </div>
 
-            <a href="{{ route('competences.create') }}">
+            <a href="{{ route('metiers.create') }}">
                 <button type="button"
                         class="inline-block w-1/4 px-6 py-3 mt-6 mb-0 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer shadow-soft-md bg-x-25 bg-150 leading-pro text-xs ease-soft-in tracking-tight-soft bg-gradient-to-tl from-blue-600 to-cyan-400 hover:scale-102 hover:shadow-soft-xs active:opacity-85">
-                    Créer une compétence
+                    Créer un métier
                 </button>
             </a>
         </div>

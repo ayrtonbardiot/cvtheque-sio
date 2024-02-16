@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     CvthequeController,
-    CompetenceController
+    CompetenceController,
+    MetierController
 };
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +19,4 @@ use App\Http\Controllers\{
 
 Route::get('/', [CvthequeController::class, 'index'])->name('accueil');
 Route::resource('competences', CompetenceController::class);
+Route::resource('metiers', MetierController::class);
