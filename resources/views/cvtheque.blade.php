@@ -19,7 +19,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/img/apple-icon.png') }}"/>
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}"/>
-    <title>La CVThèque pour la formation</title>
+    <title>{{ $title ?? '' }}</title>
+    <meta name="description" content="{{$description ?? ''}}">
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet"/>
     <!-- Font Awesome Icons -->
@@ -116,10 +117,10 @@
                         <a class="opacity-50 text-slate-700" href="javascript:;">Pages</a>
                     </li>
                     <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']"
-                        aria-current="page">Ma CVThèque
+                        aria-current="page">{{ $title ?? '' }}
                     </li>
                 </ol>
-                <h6 class="mb-0 font-bold capitalize">Ma CVThèque</h6>
+                <h6 class="mb-0 font-bold capitalize">{{ $title ?? '' }}</h6>
             </nav>
 
             <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
@@ -261,11 +262,7 @@
 
     <!-- cards -->
     <div class="w-full px-6 py-3 mx-auto">
-        <div class="flex flex-wrap -mx-3">
-            <div class="w-full max-w-full px-3 mt-6 md:w-7/12 md:flex-none">
-                @yield('contenu')
-            </div>
-        </div>
+            @yield('contenu')
     </div>
 
     <footer class="pt-4">
