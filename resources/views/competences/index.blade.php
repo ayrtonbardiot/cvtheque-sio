@@ -92,9 +92,9 @@
                                                 </svg>
                                             </button>
                                         </form>
-                                        <form method="post" action="{{ route('competences.destroy', $competence->id) }}">
+                                        <form method="post" action="{{ route('competences.delete', $competence->id) }}">
                                             @csrf
-                                            @method('DELETE')
+                                            @method('GET')
                                             <button type="submit">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

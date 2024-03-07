@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MetierRequest;
 use App\Models\Metier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class MetierController extends Controller
 {
@@ -45,13 +46,17 @@ class MetierController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Metier $metier)
+    public function show(Metier $metier, Request $request)
     {
         $data = [
             'title' => 'Les métiers de ' . config('app.name'),
             'description' => 'Retrouver toutes les métiers de ' . config('app.name'),
             'metier' => $metier
         ];
+
+        if ($request->get('delete')) {
+            $data['delete'] = true;
+        }
 
         return view('metiers.show', $data);
     }
@@ -66,7 +71,6 @@ class MetierController extends Controller
             'description' => 'Retrouver toutes les métiers de ' . config('app.name'),
             'metier' => $metier
         ];
-
         return view('metiers.edit', $data);
     }
 
@@ -75,11 +79,26 @@ class MetierController extends Controller
      */
     public function update(MetierRequest $request, Metier $metier)
     {
-        $validateData = $request->all();
+        $validateData = $request->validated();
         $metier->update($validateData);
         $succes = 'Modification effectuée avec succès';
 
         return redirect()->route('metiers.index')->withInformation($succes);
+    }
+
+    /**
+     * Show the view page for delete safe.
+     */
+    public function delete(Metier $metier)
+    {
+
+        $data = [
+            'title' => 'Les métiers de ' . config('app.name'),
+            'description' => 'Retrouver tous les métiers de ' . config('app.name'),
+            'metier' => $metier
+        ];
+
+        return view('metiers.delete', $data);
     }
 
     /**
@@ -89,6 +108,6 @@ class MetierController extends Controller
     {
         $metier->delete();
 
-        return back()->withInformation('Suppression effectuée avec succès');
+        return redirect()->route('metiers.index')->withInformation('Suppression effectuée avec succès');
     }
 }

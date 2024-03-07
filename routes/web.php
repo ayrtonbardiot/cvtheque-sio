@@ -20,3 +20,5 @@ use App\Http\Controllers\{
 Route::get('/', [CvthequeController::class, 'index'])->name('accueil');
 Route::resource('competences', CompetenceController::class);
 Route::resource('metiers', MetierController::class);
+Route::get('competences/{competence}/delete', [CompetenceController::class, 'delete'])->name('competences.delete');
+Route::get('metiers/{metier}/delete', [MetierController::class, 'delete'])->name('metiers.delete');

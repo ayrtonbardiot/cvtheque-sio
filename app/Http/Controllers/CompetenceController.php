@@ -112,13 +112,26 @@ class CompetenceController extends Controller
     }
 
     /**
+     * Show the view page for delete safe.
+     */
+    public function delete(Competence $competence) {
+
+        $data = [
+            'title' => 'Les compétences de ' . config('app.name'),
+            'description' => 'Retrouver toutes les compétences de ' . config('app.name'),
+            'competence' => $competence
+        ];
+
+        return view('competences.delete', $data);
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Competence $competence)
     {
-//        echo 'Suppression d\'une compétence';
         $competence->delete();
 
-        return back()->withInformation('Suppression effectuée avec succès');
+        return redirect()->route('competences.index')->withInformation('Suppression effectuée avec succès');
     }
 }

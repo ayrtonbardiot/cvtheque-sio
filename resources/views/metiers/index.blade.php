@@ -98,9 +98,10 @@
                                                 </svg>
                                             </button>
                                         </form>
-                                        <form method="post" action="{{ route('metiers.destroy', $metier->id) }}">
+                                        <form method="post" action="{{ route('metiers.delete', $metier->id) }}">
                                             @csrf
-                                            @method('DELETE')
+                                            @method('GET')
+                                            <input type="hidden" name="delete" value="true" />
                                             <button type="submit">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
