@@ -15,4 +15,9 @@ class Metier extends Model
       'description',
       'slug'
     ];
+
+    // Cette méthode récupère tous les professionnels d'un métier
+    public function professionnels() {
+        return $this->hasMany(Professionnel::class);
+    }
 }

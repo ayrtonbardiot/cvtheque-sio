@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     CvthequeController,
     CompetenceController,
-    MetierController
+    MetierController,
+    ProfessionnelController
 };
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,13 @@ use App\Http\Controllers\{
 */
 
 Route::get('/', [CvthequeController::class, 'index'])->name('accueil');
-Route::resource('competences', CompetenceController::class);
-Route::resource('metiers', MetierController::class);
+
 Route::get('competences/{competence}/delete', [CompetenceController::class, 'delete'])->name('competences.delete');
+Route::resource('competences', CompetenceController::class);
+
 Route::get('metiers/{metier}/delete', [MetierController::class, 'delete'])->name('metiers.delete');
+Route::resource('metiers', MetierController::class);
+
+Route::get('metier/{slug}/professionnels', [ProfessionnelController::class, 'index'])->name('professionnels.metier');
+Route::get('professionnels/{professionnel}/delete', [ProfessionnelController::class, 'delete'])->name('professionnels.delete');
+Route::resource('professionnels', ProfessionnelController::class);
