@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfessionnelRequest;
+use App\Models\Competence;
 use App\Models\Metier;
 use App\Models\Professionnel;
 use Illuminate\Http\Request;
@@ -35,8 +36,9 @@ class ProfessionnelController extends Controller
      */
     public function create()
     {
+        $competences = Competence::all();
         $metiers = Metier::all();
-        return view('professionnels.create', ['metiers' => $metiers]);
+        return view('professionnels.create', ['metiers' => $metiers, 'competences' => $competences]);
     }
 
     /**
@@ -46,7 +48,8 @@ class ProfessionnelController extends Controller
     {
         $validateData = $request->validated();
         $validateData['domaine'] = implode(",", $request->input('domaine'));
-        Professionnel::create($validateData);
+        $professionnel = Professionnel::create($validateData);
+        $professionnel->competences()->attach($validateData['competences']);
         return redirect()->route('professionnels.index')->with('information', 'Création du professionnel avec succès.');
     }
 
@@ -56,10 +59,12 @@ class ProfessionnelController extends Controller
     public function show(Professionnel $professionnel)
     {
         $professionnel->domaine = explode(",", $professionnel->domaine);
+        $competences = Competence::all();
         $data = [
             'title' => 'Les professionnels de ' . config('app.name'),
             'description' => 'Retrouver tous les professionnels de ' . config('app.name'),
-            'professionnel' => $professionnel
+            'professionnel' => $professionnel,
+            'competences' => $competences
         ];
 
         return view('professionnels.show', $data);
@@ -71,13 +76,15 @@ class ProfessionnelController extends Controller
     public function edit(Professionnel $professionnel)
     {
         $metiers = Metier::all();
+        $competences = Competence::all();
         $professionnel->domaine = explode(",", $professionnel->domaine);
 
         $data = [
             'title' => 'Les professionnels de ' . config('app.name'),
             'description' => 'Retrouver tous les professionnels de ' . config('app.name'),
             'professionnel' => $professionnel,
-            'metiers' => $metiers
+            'metiers' => $metiers,
+            'competences' => $competences
         ];
 
         return view('professionnels.edit', $data);
@@ -91,7 +98,7 @@ class ProfessionnelController extends Controller
         $validateData = $request->validated();
         $validateData['domaine'] = implode(",", $request->input('domaine'));
         $professionnel->update($validateData);
-
+        $professionnel->competences()->sync($request->competences);
         return redirect()->route('professionnels.index')->with('information', 'Modification du professionnel avec succès.');
     }
 
@@ -100,10 +107,13 @@ class ProfessionnelController extends Controller
      */
     public function delete(Professionnel $professionnel)
     {
+        $competences = Competence::all();
+
         $data = [
             'title' => 'Les professionnels de ' . config('app.name'),
             'description' => 'Retrouver tous les professionnels de ' . config('app.name'),
-            'professionnel' => $professionnel
+            'professionnel' => $professionnel,
+            'competences' => $competences
         ];
 
         return view('professionnels.delete', $data);

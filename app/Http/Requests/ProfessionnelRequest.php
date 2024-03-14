@@ -46,6 +46,7 @@ class ProfessionnelRequest extends FormRequest
             'naissance' => ['required', 'date_format:Y-m-d'],
             'formation' => ['required'],
             'domaine' => ['required', 'array', 'min:1'],
+            'competences' => ['required', 'array', 'min:1'],
             'metier_id' => ['required'],
             'source' => ['max:191'],
             'observation' => []

@@ -121,22 +121,35 @@
                                 <label class="mb-2 ml-1 font-bold text-xs text-slate-700">Domaine d'activité</label>
                                 <select id="selectM" multiple
                                         name="domaine[]"
-                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
-                                    <option value="S">Système</option>
-                                    <option value="D">Développement</option>
-                                    <option value="R">Réseau</option>
+                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg bg-white bg-clip-padding font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
+                                    <option value="S" @if(in_array("S", old('domaine', []))) selected @endif>Système</option>
+                                    <option value="D" @if(in_array("D", old('domaine', []))) selected @endif>Développement</option>
+                                    <option value="R" @if(in_array("R", old('domaine', []))) selected @endif>Réseau</option>
                                 </select>
                                 @error('domaine')
                                 <p class="text-red-500" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
-                            <label class="mb-2 ml-1 font-bold text-xs text-slate-700">Source du
-                                professionnel</label>
                             <div class="mb-4">
+                                <label class="mb-2 ml-1 font-bold text-xs text-slate-700">Compétences</label>
+                                <select id="select2" multiple
+                                        name="competences[]"
+                                        class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg bg-white bg-clip-padding font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
+                                    @foreach($competences as $competence)
+                                    <option value="{{ $competence->id }}" @if(in_array($competence->id, old('competences', []))) selected @endif>{{ $competence->intitule }}</option>
+                                    @endforeach
+                                </select>
+                                @error('competences')
+                                <p class="text-red-500" role="alert">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="mb-4">
+                                <label class="mb-2 ml-1 font-bold text-xs text-slate-700">Source du
+                                    professionnel</label>
                                 <input type="text"
                                        id="source"
                                        name="source"
-                                       class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('source') border-red-600 @enderror"
+                                       class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2  font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('source') border-red-600 @enderror"
                                        placeholder="Source du professionnel"
                                        aria-label="Source du professionnel" value="{{old('source')}}"/>
                                 @error('source')
