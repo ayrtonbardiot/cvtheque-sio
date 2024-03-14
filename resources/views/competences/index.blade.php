@@ -110,7 +110,7 @@
                         </table>
 
                         <div class="flex flex-row items-center w-full justify-center mt-2">
-                        {{ $competences->links('pagination::tailwind') }}
+                        {{ $competences->links() }}
                         </div>
                     </div>
                 </div>
