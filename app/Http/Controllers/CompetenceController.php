@@ -35,7 +35,7 @@ class CompetenceController extends Controller
 //        }
         // dump & die
 //        dd($competences);
-        $competences = Competence::get();
+        $competences = Competence::paginate(5);
 
         $data = [
             'title' => 'Les compétences de ' . config('app.name'),
