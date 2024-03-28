@@ -355,7 +355,9 @@
 </body>
 <script>
     $(function () {
-        $('select').multipleSelect()
+        $('select').multipleSelect({
+            filter: true
+        })
     })
 </script>
 <!-- plugin for charts  -->

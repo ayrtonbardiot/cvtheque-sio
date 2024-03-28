@@ -7,6 +7,7 @@ use App\Models\Competence;
 use App\Models\Metier;
 use App\Models\Professionnel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProfessionnelController extends Controller
 {
@@ -31,6 +32,24 @@ class ProfessionnelController extends Controller
         return view('professionnels.index', $data);
     }
 
+    public function search(Request $request)
+    {
+        $metiers = Metier::all();
+        $search = $request->get('search');
+        $professionnels = Professionnel::whereHas('competences', function ($query) use ($search) {
+            $query->where('intitule', 'LIKE', "%{$search}%");
+        })->get();
+        $data = [
+            'title' => 'Les professionnels de ' . config('app.name'),
+            'description' => 'Retrouvez tous les professionnels de ' . config('app.name'),
+            'professionnels' => $professionnels,
+            'metiers' => $metiers,
+            'slug' => ""
+        ];
+
+        return view('professionnels.index', $data);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -50,6 +69,8 @@ class ProfessionnelController extends Controller
         $validateData['domaine'] = implode(",", $request->input('domaine'));
         $professionnel = Professionnel::create($validateData);
         $professionnel->competences()->attach($validateData['competences']);
+        $fileName = 'cv_' . $professionnel->id . '.pdf';
+        $request->cv_fichier->storeAs('public/cv', $fileName);
         return redirect()->route('professionnels.index')->with('information', 'Création du professionnel avec succès.');
     }
 
@@ -59,12 +80,15 @@ class ProfessionnelController extends Controller
     public function show(Professionnel $professionnel)
     {
         $professionnel->domaine = explode(",", $professionnel->domaine);
+        $fileName = 'cv_' . $professionnel->id . '.pdf';
+        $fileExists = Storage::exists('public/cv/' . $fileName);
         $competences = Competence::all();
         $data = [
             'title' => 'Les professionnels de ' . config('app.name'),
             'description' => 'Retrouver tous les professionnels de ' . config('app.name'),
             'professionnel' => $professionnel,
-            'competences' => $competences
+            'competences' => $competences,
+            'cvExists' => $fileExists
         ];
 
         return view('professionnels.show', $data);
@@ -78,13 +102,16 @@ class ProfessionnelController extends Controller
         $metiers = Metier::all();
         $competences = Competence::all();
         $professionnel->domaine = explode(",", $professionnel->domaine);
+        $fileName = 'cv_' . $professionnel->id . '.pdf';
+        $fileExists = Storage::exists('public/cv/' . $fileName);
 
         $data = [
             'title' => 'Les professionnels de ' . config('app.name'),
             'description' => 'Retrouver tous les professionnels de ' . config('app.name'),
             'professionnel' => $professionnel,
             'metiers' => $metiers,
-            'competences' => $competences
+            'competences' => $competences,
+            'cvExists' => $fileExists
         ];
 
         return view('professionnels.edit', $data);
@@ -99,6 +126,10 @@ class ProfessionnelController extends Controller
         $validateData['domaine'] = implode(",", $request->input('domaine'));
         $professionnel->update($validateData);
         $professionnel->competences()->sync($request->competences);
+        if($validateData['cv_fichier']) {
+            $fileName = 'cv_' . $professionnel->id . '.pdf';
+            $request->cv_fichier->storeAs('public/cv', $fileName);
+        }
         return redirect()->route('professionnels.index')->with('information', 'Modification du professionnel avec succès.');
     }
 

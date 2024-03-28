@@ -13,7 +13,7 @@
                 </div>
                 <div class="flex-auto p-4 pt-6">
                     <div class="flex-auto p-2">
-                        <form role="form" method="post" action="{{ route('professionnels.store') }}">
+                        <form role="form" method="post" action="{{ route('professionnels.store') }}" enctype="multipart/form-data">
                             @method('POST')
                             @csrf
                             <label class="mb-2 ml-1 font-bold text-xs text-slate-700">Nom du professionnel</label>
@@ -122,9 +122,13 @@
                                 <select id="selectM" multiple
                                         name="domaine[]"
                                         class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg bg-white bg-clip-padding font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
-                                    <option value="S" @if(in_array("S", old('domaine', []))) selected @endif>Système</option>
-                                    <option value="D" @if(in_array("D", old('domaine', []))) selected @endif>Développement</option>
-                                    <option value="R" @if(in_array("R", old('domaine', []))) selected @endif>Réseau</option>
+                                    <option value="S" @if(in_array("S", old('domaine', []))) selected @endif>Système
+                                    </option>
+                                    <option value="D" @if(in_array("D", old('domaine', []))) selected @endif>
+                                        Développement
+                                    </option>
+                                    <option value="R" @if(in_array("R", old('domaine', []))) selected @endif>Réseau
+                                    </option>
                                 </select>
                                 @error('domaine')
                                 <p class="text-red-500" role="alert">{{ $message }}</p>
@@ -136,7 +140,8 @@
                                         name="competences[]"
                                         class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg bg-white bg-clip-padding font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
                                     @foreach($competences as $competence)
-                                    <option value="{{ $competence->id }}" @if(in_array($competence->id, old('competences', []))) selected @endif>{{ $competence->intitule }}</option>
+                                        <option value="{{ $competence->id }}"
+                                                @if(in_array($competence->id, old('competences', []))) selected @endif>{{ $competence->intitule }}</option>
                                     @endforeach
                                 </select>
                                 @error('competences')
@@ -179,6 +184,16 @@
                                     placeholder="Observation sur le professionnel"
                                     aria-label="Observation sur le professionnel">{{old('observation')}}</textarea>
                                 @error('observation')
+                                <p class="text-red-500" role="alert">{{ $message }}</p>
+                                @enderror
+                            </div>
+                            <div class="min-h-6 mb-2 block">
+                                <label class="mb-2 ml-1 font-normal cursor-pointer select-none text-sm text-slate-700"
+                                       for="cv_fichier">Ajouter son CV (PDF uniquement, 5Mb max.)</label>
+                                <input type="file" name="cv_fichier"
+                                       class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2  font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('source') border-red-600 @enderror"
+                                       accept="application/pdf"/>
+                                @error('cv_fichier')
                                 <p class="text-red-500" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>

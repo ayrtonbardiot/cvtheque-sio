@@ -6,34 +6,59 @@
     <div class="flex flex-wrap -mx-3">
         <div class="flex-none w-full max-w-full px-3">
             @if(session('information'))
-            <div class="w-full max-w-full px-3 mb-6">
-                <div
-                    class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
-                    <div class="flex-auto p-4">
-                        <div class="flex flex-row -mx-3 items-center">
-                            <div class="flex-none w-2/3 max-w-full px-3 ">
-                                <div>
-                                    <h5 class="mb-0 font-bold">
-                                        {{ session('information') }}
-                                    </h5>
+                <div class="w-full max-w-full px-3 mb-6">
+                    <div
+                        class="relative flex flex-col min-w-0 break-words bg-white shadow-soft-xl rounded-2xl bg-clip-border">
+                        <div class="flex-auto p-4">
+                            <div class="flex flex-row -mx-3 items-center">
+                                <div class="flex-none w-2/3 max-w-full px-3 ">
+                                    <div>
+                                        <h5 class="mb-0 font-bold">
+                                            {{ session('information') }}
+                                        </h5>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="px-3 text-right basis-1/3">
-                                <div
-                                    class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
-                                    <i class="ni leading-none text-lg relative top-3.5 text-white ni-check-bold"></i>
+                                <div class="px-3 text-right basis-1/3">
+                                    <div
+                                        class="inline-block w-12 h-12 text-center rounded-lg bg-gradient-to-tl from-purple-700 to-pink-500">
+                                        <i class="ni leading-none text-lg relative top-3.5 text-white ni-check-bold"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             @endif
             <div
                 class="relative flex flex-col min-w-0 mb-6 break-words bg-white border-0 border-transparent border-solid shadow-soft-xl rounded-2xl bg-clip-border">
                 <div class="p-6 pb-0 mb-0 bg-white border-b-0 border-b-solid rounded-t-2xl border-b-transparent">
                     <h6>Table des compétences</h6>
                 </div>
+
+                <label for="search0" class="ml-6">Rechercher une compétence...</label>
+                <form method="post" action="{{ route('competences.search') }}">
+                    @csrf
+                    <div class="flex flex-row items-center">
+                        <input type="text" name="search" id="search0"
+                               class="focus:shadow-soft-primary-outline text-sm ml-6 h-8 leading-5.6 ease-soft block appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow">
+                        <button type="submit"
+                                class="inline-block px-6 py-3 ml-6 mb-0 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer shadow-soft-md bg-x-25 bg-150 leading-pro text-xs ease-soft-in tracking-tight-soft bg-gradient-to-tl from-blue-600 to-cyan-400 hover:scale-102 hover:shadow-soft-xs active:opacity-85"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="16" height="16"
+                                 viewBox="0,0,256,256">
+                                <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                   stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                   stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
+                                   font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+                                    <g transform="scale(5.12,5.12)">
+                                        <path
+                                            d="M21,3c-9.37891,0 -17,7.62109 -17,17c0,9.37891 7.62109,17 17,17c3.71094,0 7.14063,-1.19531 9.9375,-3.21875l13.15625,13.125l2.8125,-2.8125l-13,-13.03125c2.55469,-2.97656 4.09375,-6.83984 4.09375,-11.0625c0,-9.37891 -7.62109,-17 -17,-17zM21,5c8.29688,0 15,6.70313 15,15c0,8.29688 -6.70312,15 -15,15c-8.29687,0 -15,-6.70312 -15,-15c0,-8.29687 6.70313,-15 15,-15z"></path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
                 <div class="flex-auto px-0 pt-0 pb-2">
                     <div class="p-0 overflow-x-auto ps">
                         <table class="items-center w-full mb-0 align-top border-gray-200 text-slate-500">
@@ -110,7 +135,7 @@
                         </table>
 
                         <div class="flex flex-row items-center w-full justify-center mt-2">
-                        {{ $competences->links() }}
+                            {{ $competences->links() }}
                         </div>
                     </div>
                 </div>

@@ -15,28 +15,20 @@ class CompetenceController extends Controller
      */
     public function index()
     {
-//        echo "J'arrive sur la liste des compétences";
-//        $competences = Competence::all();
-//        $competences = Competence::all('intitule'); // SELECT intitule FROM competences;
-//        $competences = Competence::get();
-//        $competences = Competence::orderByDesc('id')->get();
-//        $competences = Competence::where('intitule', '=', 'HTML')->get();
-//        $competences = Competence::where('intitule', 'LIKE', '%concevoir%')->get();
-//        $competences = Competence::orderByDesc('id')->take(3)->get();
-//        $competences = Competence::orderByDesc('id')->limit(3)->get();
-//        $competences = Competence::orderByDesc('id')->offset(6)->get();
-//        $competences = Competence::orderByDesc('id')->skip(5)->get();
-//        $competences = Competence::count();
-//        $competences = Competence::where('intitule', 'LIKE', '%concevoir%')->count();
-//        $competences = Competence::find(5);
-//        $competences = Competence::first();
-//        foreach($competences as $competence) {
-//            echo $competence->intitule . "<br>";
-//        }
-        // dump & die
-//        dd($competences);
         $competences = Competence::paginate(5);
 
+        $data = [
+            'title' => 'Les compétences de ' . config('app.name'),
+            'description' => 'Retrouver toutes les compérences de ' . config('app.name'),
+            'competences' => $competences
+        ];
+
+        return view('competences.index', $data);
+    }
+
+    public function search(Request $request) {
+        $search = $request->get('search');
+        $competences = Competence::where('intitule', 'LIKE', "%{$search}%")->paginate(5);
         $data = [
             'title' => 'Les compétences de ' . config('app.name'),
             'description' => 'Retrouver toutes les compérences de ' . config('app.name'),

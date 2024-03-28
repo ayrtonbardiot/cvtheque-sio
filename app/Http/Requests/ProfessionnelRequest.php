@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 
 class ProfessionnelRequest extends FormRequest
 {
@@ -49,6 +50,7 @@ class ProfessionnelRequest extends FormRequest
             'competences' => ['required', 'array', 'min:1'],
             'metier_id' => ['required'],
             'source' => ['max:191'],
+            'cv_fichier' => [File::types(['pdf'])->max('5mb')],
             'observation' => []
         ];
     }

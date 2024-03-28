@@ -13,7 +13,7 @@
                 </div>
                 <div class="flex-auto p-4 pt-6">
                     <div class="flex-auto p-2">
-                        <form role="form" method="post" action="{{ route('professionnels.update', $professionnel) }}">
+                        <form role="form" method="post" action="{{ route('professionnels.update', $professionnel) }}" enctype="multipart/form-data">
                             @method('PUT')
                             @csrf
                             <label class="mb-2 ml-1 font-bold text-xs text-slate-700">Nom du professionnel</label>
@@ -184,15 +184,29 @@
                                 <p class="text-red-500" role="alert">{{ $message }}</p>
                                 @enderror
                             </div>
+                            <div class="min-h-6 mb-2 block">
+                                <label class="mb-2 ml-1 font-normal cursor-pointer select-none text-sm text-slate-700"
+                                       for="cv_fichier">Modifier son CV (PDF uniquement, 5Mb max.)</label>
+                                <input type="file" name="cv_fichier"
+                                       class="focus:shadow-soft-primary-outline text-sm leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding px-3 py-2  font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:outline-none focus:transition-shadow @error('source') border-red-600 @enderror"
+                                       accept="application/pdf"/>
+                                @error('cv_fichier')
+                                <p class="text-red-500" role="alert">{{ $message }}</p>
+                                @enderror
+                            </div>
                             <div class="min-h-6 mb-0.5 block pl-12">
                                 <input id="formation"
                                        name="formation"
                                        class="mt-0.54 rounded-10 duration-250 ease-soft-in-out after:rounded-circle after:shadow-soft-2xl after:duration-250 checked:after:translate-x-5.25 h-5 relative float-left -ml-12 w-10 cursor-pointer appearance-none border border-solid border-gray-200 bg-slate-800/10 bg-none bg-contain bg-left bg-no-repeat align-top transition-all after:absolute after:top-px after:h-4 after:w-4 after:translate-x-px after:bg-white after:content-[''] checked:border-slate-800/95 checked:bg-slate-800/95 checked:bg-none checked:bg-right"
                                        type="checkbox" @checked(old('formation', $professionnel->formation ))/>
-                                <h1>TEST {{ old('formation', $professionnel->formation) }}</h1>
                                 <label class="mb-2 ml-1 font-normal cursor-pointer select-none text-sm text-slate-700"
                                        for="formation">Formation déjà effectuée ?</label>
                             </div>
+                            @if($cvExists)
+                                <a href="../storage/cv/cv_{{ $professionnel->id }}.pdf" class="mb-2 ml-1 font-bold text-lg text-slate-700 mb-4">Voir le CV</a>
+                            @else
+                                <span class="mb-2 ml-1 font-bold text-lg text-slate-700">Aucun CV</span>
+                            @endif
                             <div class="text-center flex flex-row">
                                 <a href="{{ route('professionnels.index') }}"
                                    class="inline-block w-1/4 px-6 py-3 mt-6 mb-0 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer shadow-soft-md bg-x-25 bg-150 leading-pro text-xs ease-soft-in tracking-tight-soft bg-gradient-to-tl from-blue-600 to-cyan-400 hover:scale-102 hover:shadow-soft-xs active:opacity-85">
